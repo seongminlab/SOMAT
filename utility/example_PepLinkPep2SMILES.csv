@@ -1,0 +1,5 @@
+﻿Index,Nterm,Linker,Cterm
+1,CCGA,[*1]CCNCC[*2]N,EELL
+2,ELEL,[*1]CCNCCN,
+3,,CCNCC[*2]N,EELL
+4,CCGA,CCNCCN,EELL
