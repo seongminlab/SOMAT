@@ -4,7 +4,7 @@
 
 ### requirment
 
-```
+```  
 pip install pandas
 ```
 
@@ -25,8 +25,7 @@ linker의 amine기 부분에 아미노산 체인 연결을 기본 전제로 함
 앞부분의 N-term peptide 의 carboxyl기와 linker 연결은 [\*1]로 표현, C-term peptide의 amine기와 linker 연결은 [\*2] 로 표현하여 링커에 결합 위치를 명시해야 함 (example.csv 파일 참고)  
 결합 위치를 표현하지 않은경우, linker의 맨앞 혹은 맨뒤 구조 표현식에 결합함
 
-'''
-python utility/PepLinkPep2SMILES.py help
+```
+python utility/PepLinkPep2SMILES.py help  
 python utility/PepLinkPep2SMILES.py -i example_PepLinkPep2SMILES.csv
-
-'''
+```
