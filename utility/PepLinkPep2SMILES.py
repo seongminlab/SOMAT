@@ -195,7 +195,7 @@ class PeptideLinkerBuilder:
 	    # C-말단 연결점 처리
 	    if c_point and c_peptide:
 	        # N[*2] 패턴 처리
-	        if remove_n and 'N' + c_point in linker_smiles:
+	        if remove_n == "True" and 'N' + c_point in linker_smiles:
 	            if c_peptide.startswith('N'):
 	                c_peptide_without_n = c_peptide[1:]
 	                connected_smiles = connected_smiles.replace(c_point, c_peptide_without_n)
@@ -260,7 +260,7 @@ class PeptideLinkerBuilder:
                 used_method = "direct_connection_preserved"
             
             # NH2 endpoint 처리
-            if NH2_endpoint == True:
+            if NH2_endpoint == "True":
                 smiles = self.convert_last_carboxyl_to_amide(smiles)
 
             info = {
