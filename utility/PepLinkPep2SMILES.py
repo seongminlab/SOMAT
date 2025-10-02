@@ -163,7 +163,7 @@ class PeptideLinkerBuilder:
             return smiles[:o_pos] + 'N' + smiles[o_pos + 1:]
         return smiles
     
-    def connect_with_explicit_points(self, n_peptide_seq, linker_info, c_peptide_seq, remove_n=True):
+    def connect_with_explicit_points(self, n_peptide_seq, linker_info, c_peptide_seq, remove_n):
 	    """
 	    명시적 연결점을 사용하여 구조 연결 - 원래 링커 구조 보존
 	    링커의 N과 펩타이드의 N 중복 처리
@@ -209,7 +209,7 @@ class PeptideLinkerBuilder:
 	    
 	    return connected_smiles
     
-    def build_with_preserved_linker(self, n_terminal_seq, linker_with_points, c_terminal_seq, remove_n=True):
+    def build_with_preserved_linker(self, n_terminal_seq, linker_with_points, c_terminal_seq, remove_n):
         """
         링커 구조를 보존하면서 펩타이드 연결
         """
@@ -241,7 +241,7 @@ class PeptideLinkerBuilder:
         # 링커를 중간에 그대로 삽입
         return f"{n_peptide}{linker_smiles}{c_peptide}"
     
-    def build_structure_info(self, n_terminal_seq, linker_smiles, c_terminal_seq, NH2_endpoint=False, method="auto", remove_n=True):
+    def build_structure_info(self, n_terminal_seq, linker_smiles, c_terminal_seq, NH2_endpoint, remove_n, method="auto"):
         """구조 정보와 함께 결과 반환"""
         try:
             if method == "auto":
@@ -289,7 +289,7 @@ def main():
     parser = argparse.ArgumentParser(description = "Peptide-Linker-Peptide name to smiles, see example.csv")
     parser.add_argument("-i","--input",help="example.csv file, do not change header Nterm, Linker, Cterm", default="example.csv")
     parser.add_argument("-E","--Endpoint",help="NH2_endpoint: peptide Cterm Carboxyl O=C-OH to O=C-NH2, True or False", default="True")
-    parser.add_argument("-r","--remove_N",help="Cterm peptide amine site remove when amine linking to linker[*2], True or False", default=True)
+    parser.add_argument("-r","--remove_N",help="Cterm peptide amine site remove when amine linking to linker[*2], True or False", default="True")
     
     args = parser.parse_args()
 
@@ -317,7 +317,7 @@ def main():
         #print(linker_explicit)
         #print(c_term)
 
-        result = builder.build_structure_info(n_term, linker_explicit, c_term, NH2_endpoint, method="auto", remove_n=True)
+        result = builder.build_structure_info(n_term, linker_explicit, c_term, NH2_endpoint, remove_n, method="auto")
     
         if 'error' in result:
             print(f"에러: {result['error']}")
