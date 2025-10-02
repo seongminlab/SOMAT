@@ -283,7 +283,6 @@ def main():
     """메인 실행 함수"""
     builder = PeptideLinkerBuilder()
 
-    print("sys argv parser")
 
 
     parser = argparse.ArgumentParser(description = "Peptide-Linker-Peptide name to smiles, see example.csv")
