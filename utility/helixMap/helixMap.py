@@ -10,22 +10,41 @@ def get_amino_acid_properties():
         'polar_uncharged': ['S', 'T', 'N', 'Q', 'C', 'Y'],
         'nonpolar': ['A', 'V', 'L', 'I', 'M', 'F', 'W', 'P', 'G']
     }
+def get_amino_acid_properties_2():
+    """아미노산 속성 분류 2"""
+    return {
+        'Hydrophobic': ['A', 'V', 'L', 'I', 'M', 'F', 'Y', 'W'],
+        'Hydrophilic' : ['S', 'T', 'N', 'Q'],
+        'Positive_Charge': ['K', 'R', 'H'],
+        'Negative_charge': ['D', 'E'],   
+        'Special': ['P', 'G', 'C']
+    }
+
+
 
 def get_color(amino_acid, properties=None):
     """아미노산 속성에 따른 색상 반환"""
     if properties is None:
-        properties = get_amino_acid_properties()
+        properties = get_amino_acid_properties_2()
     
-    if amino_acid in properties['polar_basic']:
-        return '#4169E1'
-    elif amino_acid in properties['polar_acidic']:
-        return '#DC143C'
-    elif amino_acid in properties['polar_uncharged']:
-        return '#32CD32'
-    elif amino_acid in properties['nonpolar']:
-        return '#FFD700'
+    if amino_acid in properties['Hydrophobic']:
+        return '#FFEAA7'
+    elif amino_acid in properties['Hydrophilic']:
+        return '#74B9FF'
+    elif amino_acid in properties['Positive_Charge']:
+        return '#A29BFE'
+    elif amino_acid in properties['Negative_charge']:
+        return '#FF7675'
+    elif amino_acid in properties['Special']:
+        return '#B2BEC3'
     else:
         return '#CCCCCC'
+
+# 원래 생화학 분야에서 쓰는 색 조합
+#Hydrophobic (소수성): 노란색, 주황색, 밝은 톤
+#Hydrophilic (친수성): 파란색, 청록색, 초록색
+#Positive charge (염기성): 파란색, 보라색
+#Negative charge (산성): 빨간색, 분홍색
 
 def draw_helical_wheel(sequence, title=None, show_connections=True, 
                        save_path=None, figsize=(12, 12), spiral=True):
@@ -48,7 +67,7 @@ def draw_helical_wheel(sequence, title=None, show_connections=True,
         나선형 배치 사용 여부 (긴 서열에 권장)
     """
     angle_per_residue = 100  # degrees
-    properties = get_amino_acid_properties()
+    properties = get_amino_acid_properties_2()
     
     fig, ax = plt.subplots(figsize=figsize)
     ax.set_aspect('equal')
@@ -94,15 +113,15 @@ def draw_helical_wheel(sequence, title=None, show_connections=True,
         ax.add_patch(circle)
         
         # 아미노산 문자 표시
-        fontsize = max(10, 16 - (len(sequence) / 50))
-        ax.text(x, y, aa, ha='center', va='center', 
-                fontsize=fontsize, fontweight='bold', zorder=4)
+        fontsize = max(45, 50 - (len(sequence) / 50))
+        ax.text(x, y, aa, ha='center', va='center_baseline', 
+                fontsize=fontsize, fontweight='bold', fontfamily='Arial', zorder=4)
         
         # 위치 번호 표시
-        offset = circle_radius + 0.15
+        offset = circle_radius + 0.1
         label_x = x + offset * np.cos(angle)
         label_y = y + offset * np.sin(angle)
-        label_fontsize = max(8, 12 - (len(sequence) / 60))
+        label_fontsize = max(12, 25 - (len(sequence) / 60))
         ax.text(label_x, label_y, str(i+1), 
                 ha='center', va='center', fontsize=label_fontsize, 
                 color='gray', zorder=2)
@@ -112,8 +131,8 @@ def draw_helical_wheel(sequence, title=None, show_connections=True,
         for i in range(len(positions) - 1):
             x1, y1 = positions[i]
             x2, y2 = positions[i + 1]
-            ax.plot([x1, x2], [y1, y2], 'gray', linewidth=0.8, 
-                    alpha=0.4, zorder=1)
+            ax.plot([x1, x2], [y1, y2], 'black', linewidth=1.5, 
+                    alpha=0.8, zorder=1)
     
     # 축 범위 자동 조정
     max_radius = base_radius + (radius_increment * len(sequence) / 3.6)
@@ -125,10 +144,11 @@ def draw_helical_wheel(sequence, title=None, show_connections=True,
     # 범례 추가
     from matplotlib.patches import Patch
     legend_elements = [
-        Patch(facecolor='#4169E1', edgecolor='black', label='Polar / Basic'),
-        Patch(facecolor='#DC143C', edgecolor='black', label='Polar / Acidic'),
-        Patch(facecolor='#32CD32', edgecolor='black', label='Polar / Uncharged'),
-        Patch(facecolor='#FFD700', edgecolor='black', label='Nonpolar'),
+        Patch(facecolor='#FFEAA7', edgecolor='black', label='Hydrophobic'),
+        Patch(facecolor='#74B9FF', edgecolor='black', label='Hydrophilic'),
+        Patch(facecolor='#A29BFE', edgecolor='black', label='Positive_Charge'),
+        Patch(facecolor='#FF7675', edgecolor='black', label='Negative_charge'),
+        Patch(facecolor='#B2BEC3', edgecolor='black', label='Special'),
         Patch(facecolor='#CCCCCC', edgecolor='black', label='Unknown')
     ]
     ax.legend(handles=legend_elements, loc='upper right', 
@@ -153,7 +173,7 @@ def draw_helical_wheel(sequence, title=None, show_connections=True,
 # 사용 예시
 if __name__ == "__main__":
 
-    sequence = "VDDALALRPRGPEPAEGLRD"
+    sequence = "DKASDAWDSAK"
 
     if len(sequence) > 18:
         spiral_layout = True
